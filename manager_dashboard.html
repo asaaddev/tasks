@@ -44,6 +44,25 @@
         .loading-message, .error-message { text-align: center; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; }
         .loading-message { background-color: #dbeafe; color: #1e40af; }
         .error-message { background-color: #fee2e2; color: #991b1b; }
+        
+        /* Media Queries for Responsive Design */
+        @media (max-width: 768px) {
+            .container { padding: 1rem; margin: 1rem auto; }
+            .header h1 { font-size: 1.2rem; }
+            .header button { padding: 8px 16px; }
+            .summary-cards { flex-direction: column; gap: 0.75rem; }
+            .summary-card { min-width: 100%; }
+            .actions { flex-direction: column; align-items: stretch; gap: 0.75rem; }
+            .actions .filter-buttons, .actions .filters-group { flex-direction: column; width: 100%; }
+            .actions .filter-buttons button, .actions .add-task-btn, .actions .employee-filter-select, .actions .month-filter-select, .actions .week-filter-select { width: 100%; }
+            table { font-size: 0.8rem; }
+        }
+        
+        /* Add a table container for horizontal scrolling on small screens */
+        .table-container {
+            overflow-x: auto;
+        }
+        
     </style>
 </head>
 <body>
@@ -85,7 +104,7 @@
                         <label for="employeeFilter">تصفية بالموظف:</label>
                         <select id="employeeFilter" class="employee-filter-select">
                             <option value="all">كل الموظفين</option>
-                            </select>
+                        </select>
                     </div>
                     <div class="filter-by-month-container">
                         <label for="monthFilter">تصفية بالشهر:</label>
@@ -120,20 +139,21 @@
                 <button id="openAddTaskModalBtn" class="add-task-btn"><i class="fas fa-plus"></i> إضافة مهمة جديدة</button>
             </div>
             
-            <table class="tasks-table">
-                <thead>
-                    <tr>
-                        <th>التاريخ</th>
-                        <th>الموظف</th>
-                        <th>المهمة</th>
-                        <th>الحالة</th>
-                        <th>ملاحظات</th>
-                        <th>إجراءات</th>
-                    </tr>
-                </thead>
-                <tbody id="tasksTableBody">
+            <div class="table-container"> <table class="tasks-table">
+                    <thead>
+                        <tr>
+                            <th>التاريخ</th>
+                            <th>الموظف</th>
+                            <th>المهمة</th>
+                            <th>الحالة</th>
+                            <th>ملاحظات</th>
+                            <th>إجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tasksTableBody">
                     </tbody>
-            </table>
+                </table>
+            </div>
         </div>
     </div>
 
