@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم المدير</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f9; margin: 0; padding: 0; }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 2rem; background-color: #fff; border-radius: 0.75rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1rem; margin-bottom: 1.5rem; border-bottom: 2px solid #e0e0e0; }
+        .header h1 { color: #1e40af; margin: 0; font-size: 1.5rem; font-weight: bold; }
+        .header button { background-color: #dc2626; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        .summary-cards { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; }
+        .summary-card { text-align: center; padding: 1.5rem; border-radius: 0.5rem; color: white; flex: 1; min-width: 200px; }
+        .pending-card { background-color: #f97316; }
+        .review-card { background-color: #3b82f6; }
+        .completed-card { background-color: #10b981; }
+        .tasks-section h2 { color: #1e40af; border-bottom: 2px solid #1e40af; padding-bottom: 0.5rem; margin-bottom: 1.5rem; font-size: 1.25rem; font-weight: bold; }
+        .actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+        .actions .filter-buttons { display: flex; gap: 0.5rem; }
+        .actions .filters-group { display: flex; flex-wrap: wrap; gap: 1rem; }
+        .actions .filter-by-employee-container, .actions .filter-by-month-container, .actions .filter-by-week-container { display: flex; gap: 0.5rem; align-items: center; }
+        .actions .filter-buttons button, .actions .add-task-btn, .actions .month-filter-select, .actions .week-filter-select, .actions .employee-filter-select { padding: 0.6rem 1rem; border-radius: 0.5rem; cursor: pointer; transition: background-color 0.3s; border: none; font-weight: 500; }
+        .actions .filter-buttons button { background-color: #e5e7eb; color: #1f2937; }
+        .actions .filter-buttons button.active { background-color: #1e40af; color: white; }
+        .actions .add-task-btn { background-color: #10b981; color: white; }
+        .actions .month-filter-select, .actions .week-filter-select, .actions .employee-filter-select { border: 1px solid #d1d5db; background-color: #f9fafb; color: #1f2937; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #e5e7eb; padding: 1rem; text-align: right; }
+        th { background-color: #f3f4f6; color: #1f2937; font-weight: bold; }
+        .action-icon { cursor: pointer; font-size: 1.2em; margin: 0 0.5rem; transition: color 0.2s ease-in-out; }
+        .edit-icon { color: #1e40af; }
+        .approve-icon { color: #10b981; }
+        .reject-icon { color: #ef4444; }
+        .delete-icon { color: #dc2626; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); padding-top: 50px; }
+        .modal-content { background-color: #fff; margin: auto; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); width: 90%; max-width: 600px; position: relative; }
+        .close-button { color: #aaa; float: left; font-size: 2rem; font-weight: bold; position: absolute; top: 1rem; left: 1.5rem; cursor: pointer; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; color: #1f2937; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.75rem; border-radius: 0.5rem; border: 1px solid #d1d5db; box-sizing: border-box; }
+        .submit-button { display: block; width: 100%; padding: 0.75rem; background-color: #1e40af; color: white; border: none; border-radius: 0.5rem; cursor: pointer; font-size: 1rem; font-weight: bold; }
+        .loading-message, .error-message { text-align: center; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; }
+        .loading-message { background-color: #dbeafe; color: #1e40af; }
+        .error-message { background-color: #fee2e2; color: #991b1b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>لوحة تحكم المدير</h1>
+            <button id="logoutBtn"><i class="fas fa-sign-out-alt"></i> تسجيل خروج</button>
+        </header>
+
+        <div id="message" class="hidden"></div>
+        
+        <div class="summary-cards">
+            <div class="summary-card pending-card">
+                <h3>قيد التنفيذ</h3>
+                <p id="pendingCount" class="text-3xl font-bold">0</p>
+            </div>
+            <div class="summary-card review-card">
+                <h3>قيد المراجعة</h3>
+                <p id="reviewCount" class="text-3xl font-bold">0</p>
+            </div>
+            <div class="summary-card completed-card">
+                <h3>مكتملة</h3>
+                <p id="completedCount" class="text-3xl font-bold">0</p>
+            </div>
+        </div>
+        
+        <div class="tasks-section">
+            <h2>جميع المهام</h2>
+            <div class="actions">
+                <div class="filter-buttons">
+                    <button class="filter-btn" data-filter="all">كل المهام</button>
+                    <button class="filter-btn" data-filter="قيد التنفيذ">قيد التنفيذ</button>
+                    <button class="filter-btn active" data-filter="قيد المراجعة">قيد المراجعة</button>
+                    <button class="filter-btn" data-filter="مكتملة">مكتملة</button>
+                </div>
+                
+                <div class="filters-group">
+                    <div class="filter-by-employee-container">
+                        <label for="employeeFilter">تصفية بالموظف:</label>
+                        <select id="employeeFilter" class="employee-filter-select">
+                            <option value="all">كل الموظفين</option>
+                            </select>
+                    </div>
+                    <div class="filter-by-month-container">
+                        <label for="monthFilter">تصفية بالشهر:</label>
+                        <select id="monthFilter" class="month-filter-select">
+                            <option value="all">كل الشهور</option>
+                            <option value="01">يناير</option>
+                            <option value="02">فبراير</option>
+                            <option value="03">مارس</option>
+                            <option value="04">أبريل</option>
+                            <option value="05">مايو</option>
+                            <option value="06">يونيو</option>
+                            <option value="07">يوليو</option>
+                            <option value="08">أغسطس</option>
+                            <option value="09">سبتمبر</option>
+                            <option value="10">أكتوبر</option>
+                            <option value="11">نوفمبر</option>
+                            <option value="12">ديسمبر</option>
+                        </select>
+                    </div>
+                    <div class="filter-by-week-container">
+                        <label for="weekFilter">تصفية بالأسبوع:</label>
+                        <select id="weekFilter" class="week-filter-select">
+                            <option value="all">كل الأسابيع</option>
+                            <option value="1">الأسبوع الأول</option>
+                            <option value="2">الأسبوع الثاني</option>
+                            <option value="3">الأسبوع الثالث</option>
+                            <option value="4">الأسبوع الرابع</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button id="openAddTaskModalBtn" class="add-task-btn"><i class="fas fa-plus"></i> إضافة مهمة جديدة</button>
+            </div>
+            
+            <table class="tasks-table">
+                <thead>
+                    <tr>
+                        <th>التاريخ</th>
+                        <th>الموظف</th>
+                        <th>المهمة</th>
+                        <th>الحالة</th>
+                        <th>ملاحظات</th>
+                        <th>إجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="tasksTableBody">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="addTaskModal" class="modal">
+        <div class="modal-content">
+            <span id="closeAddTaskModalBtn" class="close-button">&times;</span>
+            <h3 class="text-xl font-bold mb-4">إضافة مهمة جديدة</h3>
+            <form id="addTaskForm">
+                <div class="form-group">
+                    <label for="taskEmployee">الموظف:</label>
+                    <select id="taskEmployee" name="الموظف" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="taskDate">التاريخ:</label>
+                    <input type="date" id="taskDate" name="التاريخ" required>
+                </div>
+                <div class="form-group">
+                    <label for="taskName">المهمة:</label>
+                    <input type="text" id="taskName" name="المهمة" placeholder="ادخل اسم المهمة" required>
+                </div>
+                <div class="form-group">
+                    <label for="taskNotes">ملاحظات:</label>
+                    <textarea id="taskNotes" name="ملاحظات" rows="3" placeholder="أضف ملاحظاتك"></textarea>
+                </div>
+                <button type="submit" class="submit-button">إضافة المهمة</button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="editTaskModal" class="modal">
+        <div class="modal-content">
+            <span id="closeEditTaskModalBtn" class="close-button">&times;</span>
+            <h3 class="text-xl font-bold mb-4">تعديل المهمة</h3>
+            <form id="editTaskForm">
+                <input type="hidden" id="editTaskId">
+                <div class="form-group">
+                    <label for="editTaskDate">التاريخ:</label>
+                    <input type="date" id="editTaskDate" name="التاريخ" required>
+                </div>
+                <div class="form-group">
+                    <label for="editTaskEmployee">الموظف:</label>
+                    <input type="text" id="editTaskEmployee" name="الموظف" required>
+                </div>
+                <div class="form-group">
+                    <label for="editTaskName">المهمة:</label>
+                    <input type="text" id="editTaskName" name="المهمة" required>
+                </div>
+                <div class="form-group">
+                    <label for="editTaskStatus">الحالة:</label>
+                    <select id="editTaskStatus" name="الحالة" required>
+                        <option value="قيد التنفيذ">قيد التنفيذ</option>
+                        <option value="مكتملة">مكتملة</option>
+                        <option value="قيد المراجعة">قيد المراجعة</option>
+                        <option value="ملغاة">ملغاة</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editTaskNotes">ملاحظات:</label>
+                    <textarea id="editTaskNotes" name="ملاحظات" rows="3"></textarea>
+                </div>
+                <button type="submit" class="submit-button">حفظ التغييرات</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="manager_script.js"></script>
+</body>
+</html>
