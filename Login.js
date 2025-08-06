@@ -38,7 +38,7 @@ loginForm.addEventListener('submit', async (e) => {
             if (userRole === 'admin') {
                 window.location.href = 'manager_dashboard.html'; // توجيه المدير إلى لوحة تحكم المدير
             } else if (userRole === 'employee') {
-                window.location.href = 'index.html'; // توجيه الموظف إلى صفحة عرض المهام الخاصة به
+                window.location.href = 'employee.html'; // توجيه الموظف إلى صفحة عرض المهام الخاصة به
             } else {
                 // في حال وجود دور غير معرف في Google Sheet
                 messageDiv.textContent = 'دور المستخدم غير معرف. يرجى الاتصال بالمسؤول.';
