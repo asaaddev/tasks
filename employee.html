@@ -13,6 +13,7 @@
             <h1>أهلاً بك، <span id="employeeNameSpan"></span></h1>
             <button class="logout-btn"><i class="fas fa-sign-out-alt"></i> تسجيل خروج</button>
         </header>
+
         <div class="status-summary">
             <div class="summary-card pending-card">
                 <h3>مهام قيد التنفيذ</h3>
@@ -23,14 +24,15 @@
                 <p id="completedCount">0</p>
             </div>
         </div>
+
         <div class="tasks-section">
             <h2>المهام الموكلة إليك</h2>
             <div class="action-buttons">
                 <button class="filter-btn active" data-filter="all">كل المهام</button>
                 <button class="filter-btn" data-filter="قيد التنفيذ">قيد التنفيذ</button>
                 <button class="filter-btn" data-filter="مكتملة">مكتملة</button>
-                <button class="add-task-btn"><i class="fas fa-plus"></i> إضافة مهمة</button>
             </div>
+            
             <div class="table-container">
                 <table class="tasks-table">
                     <thead>
@@ -48,8 +50,7 @@
             </div>
         </div>
     </div>
-        <script src="employee_script.js"></script>
-
+    
+    <script src="employee_script.js"></script>
 </body>
 </html>
-
