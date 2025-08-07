@@ -26,6 +26,11 @@
         .actions .filter-buttons button.active { background-color: #1e40af; color: white; }
         .actions .add-task-btn { background-color: #10b981; color: white; }
         .actions .month-filter-select, .actions .week-filter-select, .actions .employee-filter-select { border: 1px solid #d1d5db; background-color: #f9fafb; color: #1f2937; }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+
         table { width: 100%; border-collapse: collapse; }
         th, td { border: 1px solid #e5e7eb; padding: 1rem; text-align: right; }
         th { background-color: #f3f4f6; color: #1f2937; font-weight: bold; }
@@ -45,7 +50,7 @@
         .loading-message { background-color: #dbeafe; color: #1e40af; }
         .error-message { background-color: #fee2e2; color: #991b1b; }
         
-        /* Media Queries for Responsive Design */
+        /* @media: Media Queries for Responsive Design */
         @media (max-width: 768px) {
             .container { padding: 1rem; margin: 1rem auto; }
             .header h1 { font-size: 1.2rem; }
@@ -57,12 +62,6 @@
             .actions .filter-buttons button, .actions .add-task-btn, .actions .employee-filter-select, .actions .month-filter-select, .actions .week-filter-select { width: 100%; }
             table { font-size: 0.8rem; }
         }
-        
-        /* Add a table container for horizontal scrolling on small screens */
-        .table-container {
-            overflow-x: auto;
-        }
-        
     </style>
 </head>
 <body>
@@ -139,7 +138,8 @@
                 <button id="openAddTaskModalBtn" class="add-task-btn"><i class="fas fa-plus"></i> إضافة مهمة جديدة</button>
             </div>
             
-            <div class="table-container"> <table class="tasks-table">
+            <div class="table-container">
+                <table class="tasks-table">
                     <thead>
                         <tr>
                             <th>التاريخ</th>
