@@ -1,4 +1,3 @@
-// استبدل هذا الرابط بالـ URL الخاص بـ API الرئيسي لجدول بيانات المهام من SheetDB.io
 const SHEETDB_MAIN_API_URL = 'https://sheetdb.io/api/v1/gv7yywbjg53qh';
 
 // الحصول على عناصر DOM
