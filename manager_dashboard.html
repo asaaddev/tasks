@@ -26,11 +26,7 @@
         .actions .filter-buttons button.active { background-color: #1e40af; color: white; }
         .actions .add-task-btn { background-color: #10b981; color: white; }
         .actions .month-filter-select, .actions .week-filter-select, .actions .employee-filter-select { border: 1px solid #d1d5db; background-color: #f9fafb; color: #1f2937; }
-        
-        .table-container {
-            overflow-x: auto;
-        }
-
+        .table-container { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; }
         th, td { border: 1px solid #e5e7eb; padding: 1rem; text-align: right; }
         th { background-color: #f3f4f6; color: #1f2937; font-weight: bold; }
@@ -50,7 +46,7 @@
         .loading-message { background-color: #dbeafe; color: #1e40af; }
         .error-message { background-color: #fee2e2; color: #991b1b; }
         
-        /* @media: Media Queries for Responsive Design */
+        /* Media Queries للتجاوب مع الأجهزة المختلفة */
         @media (max-width: 768px) {
             .container { padding: 1rem; margin: 1rem auto; }
             .header h1 { font-size: 1.2rem; }
@@ -70,9 +66,7 @@
             <h1>لوحة تحكم المدير</h1>
             <button id="logoutBtn"><i class="fas fa-sign-out-alt"></i> تسجيل خروج</button>
         </header>
-
         <div id="message" class="hidden"></div>
-        
         <div class="summary-cards">
             <div class="summary-card pending-card">
                 <h3>قيد التنفيذ</h3>
@@ -87,7 +81,6 @@
                 <p id="completedCount" class="text-3xl font-bold">0</p>
             </div>
         </div>
-        
         <div class="tasks-section">
             <h2>جميع المهام</h2>
             <div class="actions">
@@ -97,7 +90,6 @@
                     <button class="filter-btn active" data-filter="قيد المراجعة">قيد المراجعة</button>
                     <button class="filter-btn" data-filter="مكتملة">مكتملة</button>
                 </div>
-                
                 <div class="filters-group">
                     <div class="filter-by-employee-container">
                         <label for="employeeFilter">تصفية بالموظف:</label>
@@ -134,10 +126,8 @@
                         </select>
                     </div>
                 </div>
-                
                 <button id="openAddTaskModalBtn" class="add-task-btn"><i class="fas fa-plus"></i> إضافة مهمة جديدة</button>
             </div>
-            
             <div class="table-container">
                 <table class="tasks-table">
                     <thead>
@@ -156,7 +146,6 @@
             </div>
         </div>
     </div>
-
     <div id="addTaskModal" class="modal">
         <div class="modal-content">
             <span id="closeAddTaskModalBtn" class="close-button">&times;</span>
@@ -182,7 +171,6 @@
             </form>
         </div>
     </div>
-    
     <div id="editTaskModal" class="modal">
         <div class="modal-content">
             <span id="closeEditTaskModalBtn" class="close-button">&times;</span>
@@ -218,7 +206,6 @@
             </form>
         </div>
     </div>
-
     <script src="manager_script.js"></script>
 </body>
 </html>
