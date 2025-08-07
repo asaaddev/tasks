@@ -5,51 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة تحكم الموظف</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        /* إضافة بعض التنسيقات الأساسية */
-        body { font-family: sans-serif; background-color: #f4f7f9; }
-        .container { max-width: 1200px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e0e0e0; padding-bottom: 15px; margin-bottom: 20px; }
-        .header h1 { color: #007bff; margin: 0; }
-        .header button { background-color: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
-        .status-summary { display: flex; justify-content: space-around; margin-bottom: 20px; }
-        .summary-card { text-align: center; padding: 20px; border-radius: 8px; flex: 1; margin: 0 10px; color: white; }
-        .pending-card { background-color: #ffc107; }
-        .completed-card { background-color: #28a745; }
-        .tasks-section h2 { color: #007bff; border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-bottom: 20px; }
-        .action-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
-        .filter-btn, .add-task-btn { padding: 10px 15px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; border: none; }
-        .filter-btn { background-color: #e9ecef; }
-        .filter-btn.active { background-color: #007bff; color: white; }
-        .add-task-btn { background-color: #28a745; color: white; }
-        .add-task-btn:hover { background-color: #218838; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: right; }
-        th { background-color: #f2f2f2; }
-        .action-icon { cursor: pointer; color: #28a745; font-size: 1.2em; }
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); direction: rtl; padding-top: 60px; }
-        .modal-content { background-color: #fefefe; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); width: 90%; max-width: 500px; position: relative; text-align: right; margin: auto; }
-        .close-button { color: #aaa; float: left; font-size: 28px; font-weight: bold; position: absolute; top: 10px; left: 20px; cursor: pointer; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box; }
-        .submit-button { width: 100%; background-color: #007bff; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease; }
-        .submit-button:hover { background-color: #0056b3; }
-        .response-message { padding: 10px; margin-top: 15px; border-radius: 5px; text-align: center; }
-        .response-message.success { background-color: #d4edda; color: #155724; }
-        .response-message.error { background-color: #f8d7da; color: #721c24; }
-    </style>
+    <link rel="stylesheet" href="employee_page_style.css">
 </head>
 <body>
     <div class="container">
         <header class="header">
-            <h1>مرحباً يا <span id="employeeNameSpan"></span>!</h1>
-            <button id="logoutBtn"><i class="fas fa-sign-out-alt"></i> تسجيل خروج</button>
+            <h1>أهلاً بك، <span id="employeeNameSpan"></span></h1>
+            <button class="logout-btn"><i class="fas fa-sign-out-alt"></i> تسجيل خروج</button>
         </header>
 
         <div class="status-summary">
             <div class="summary-card pending-card">
-                <h3>مهام قيد الإنجاز والمراجعة</h3>
+                <h3>مهام قيد التنفيذ</h3>
                 <p id="pendingCount">0</p>
             </div>
             <div class="summary-card completed-card">
@@ -57,25 +24,22 @@
                 <p id="completedCount">0</p>
             </div>
         </div>
-        
+
         <div class="tasks-section">
-            <h2>مهامي</h2>
+            <h2>المهام الموكلة إليك</h2>
             <div class="action-buttons">
                 <button class="filter-btn active" data-filter="all">كل المهام</button>
-                <button class="filter-btn" data-filter="week">هذا الأسبوع</button>
-                <button class="filter-btn" data-filter="month">هذا الشهر</button>
                 <button class="filter-btn" data-filter="قيد التنفيذ">قيد التنفيذ</button>
                 <button class="filter-btn" data-filter="مكتملة">مكتملة</button>
-                <button class="filter-btn" data-filter="قيد المراجعة">قيد المراجعة</button>
-                <button id="openAddTaskModalBtn" class="add-task-btn"><i class="fas fa-plus"></i> إضافة مهمة جديدة</button>
+                <button class="add-task-btn"><i class="fas fa-plus"></i> إضافة مهمة</button>
             </div>
+            
             <div class="table-container">
                 <table class="tasks-table">
                     <thead>
                         <tr>
                             <th>التاريخ</th>
                             <th>المهمة</th>
-                            <th>العدد</th>
                             <th>الحالة</th>
                             <th>ملاحظات</th>
                             <th>إجراءات</th>
@@ -87,51 +51,5 @@
             </div>
         </div>
     </div>
-
-    <div id="addTaskModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h3>إضافة مهمة جديدة</h3>
-            <form id="addTaskForm">
-                <div class="form-group">
-                    <label for="taskDate">التاريخ:</label>
-                    <input type="date" id="taskDate" name="التاريخ" required>
-                </div>
-                <div class="form-group">
-                    <label for="taskDayOfWeek">يوم الأسبوع:</label>
-                    <select id="taskDayOfWeek" name="يوم الأسبوع" required>
-                        <option value="الأحد">الأحد</option><option value="الإثنين">الإثنين</option>
-                        <option value="الثلاثاء">الثلاثاء</option><option value="الأربعاء">الأربعاء</option>
-                        <option value="الخميس">الخميس</option><option value="الجمعة">الجمعة</option>
-                        <option value="السبت">السبت</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="taskType">نوع المهمة:</label>
-                    <select id="taskType" name="نوع المهمة" required>
-                        <option value="يومية">يومية</option><option value="أسبوعية">أسبوعية</option>
-                        <option value="شهرية">شهرية</option><option value="عاجلة">عاجلة</option>
-                        <option value="مشروع">مشروع</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="taskName">المهمة:</label>
-                    <input type="text" id="taskName" name="المهمة" placeholder="ادخل اسم المهمة" required>
-                </div>
-                <div class="form-group">
-                    <label for="taskQuantity">العدد (اختياري):</label>
-                    <input type="number" id="taskQuantity" name="العدد" placeholder="ادخل العدد (اختياري)">
-                </div>
-                <div class="form-group">
-                    <label for="taskNotes">ملاحظات:</label>
-                    <textarea id="taskNotes" name="ملاحظات" rows="3" placeholder="أضف ملاحظاتك"></textarea>
-                </div>
-                <button type="submit" class="submit-button">إضافة</button>
-                <div id="responseMessage" class="response-message"></div>
-            </form>
-        </div>
-    </div>
-    
-    <script src="employee_page_script.js"></script>
 </body>
 </html>
