@@ -50,7 +50,7 @@ body {
     display: flex;
     gap: 20px;
     margin-bottom: 30px;
-    flex-wrap: wrap; /* Added for responsiveness */
+    flex-wrap: wrap; 
 }
 .summary-card {
     flex: 1;
@@ -59,7 +59,7 @@ body {
     color: white;
     text-align: center;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    min-width: 200px; /* Added for better layout on medium screens */
+    min-width: 200px;
 }
 .summary-card h3 {
     margin: 0 0 10px 0;
@@ -231,7 +231,7 @@ body {
     background-color: #f8d7da;
     color: #721c24;
 }
-/* Media Queries for Responsive Design */
+/* @media: Media Queries for Responsive Design */
 @media (max-width: 768px) {
     .container {
         margin: 10px;
