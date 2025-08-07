@@ -11,12 +11,12 @@
     <div class="container">
         <header class="header">
             <h1>أهلاً بك، <span id="employeeNameSpan"></span></h1>
-            <button class="logout-btn"><i class="fas fa-sign-out-alt"></i> تسجيل خروج</button>
+            <button id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> تسجيل خروج</button>
         </header>
 
         <div class="status-summary">
             <div class="summary-card pending-card">
-                <h3>مهام قيد التنفيذ</h3>
+                <h3>قيد التنفيذ والمراجعة</h3>
                 <p id="pendingCount">0</p>
             </div>
             <div class="summary-card completed-card">
@@ -31,6 +31,8 @@
                 <button class="filter-btn active" data-filter="all">كل المهام</button>
                 <button class="filter-btn" data-filter="قيد التنفيذ">قيد التنفيذ</button>
                 <button class="filter-btn" data-filter="مكتملة">مكتملة</button>
+                <button class="filter-btn" data-filter="قيد المراجعة">قيد المراجعة</button>
+                <button id="openAddTaskModalBtn" class="add-task-btn"><i class="fas fa-plus"></i> إضافة مهمة</button>
             </div>
             
             <div class="table-container">
@@ -39,6 +41,7 @@
                         <tr>
                             <th>التاريخ</th>
                             <th>المهمة</th>
+                            <th>العدد</th>
                             <th>الحالة</th>
                             <th>ملاحظات</th>
                             <th>إجراءات</th>
@@ -48,6 +51,49 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+    </div>
+    
+    <div id="addTaskModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3 class="text-xl font-bold mb-4">إضافة مهمة جديدة</h3>
+            <form id="addTaskForm">
+                <div class="form-group">
+                    <label for="taskDate">التاريخ:</label>
+                    <input type="date" id="taskDate" name="التاريخ" required>
+                </div>
+                <div class="form-group">
+                    <label for="taskDayOfWeek">يوم الأسبوع:</label>
+                    <select id="taskDayOfWeek" name="يوم الأسبوع" required>
+                        <option value="الأحد">الأحد</option>
+                        <option value="الإثنين">الإثنين</option>
+                        <option value="الثلاثاء">الثلاثاء</option>
+                        <option value="الأربعاء">الأربعاء</option>
+                        <option value="الخميس">الخميس</option>
+                        <option value="الجمعة">الجمعة</option>
+                        <option value="السبت">السبت</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="taskType">نوع المهمة:</label>
+                    <input type="text" id="taskType" name="نوع المهمة" placeholder="نوع المهمة" required>
+                </div>
+                <div class="form-group">
+                    <label for="taskName">المهمة:</label>
+                    <input type="text" id="taskName" name="المهمة" placeholder="ادخل اسم المهمة" required>
+                </div>
+                <div class="form-group">
+                    <label for="taskQuantity">العدد:</label>
+                    <input type="number" id="taskQuantity" name="العدد" placeholder="ادخل العدد">
+                </div>
+                <div class="form-group">
+                    <label for="taskNotes">ملاحظات:</label>
+                    <textarea id="taskNotes" name="ملاحظات" rows="3" placeholder="أضف ملاحظاتك"></textarea>
+                </div>
+                <div id="responseMessage" class="response-message hidden"></div>
+                <button type="submit" class="submit-button">إرسال للمراجعة</button>
+            </form>
         </div>
     </div>
     
